@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <style>
+        body{
+            margin:0;
+            height:100vh;
+            background-color:#282c34;
+            color:white;
+            display:lflex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            padding: 15px 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            float: left;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        .content {
+            padding: 50px;
+            text-align: center;
+        }
+
+        .content img {
+            width: 300px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            text-align:center;
+        }
+        .features {
+            margin:auto;
+            width:50%;
+            padding:10px;
+
+            
+        }
+
+</style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navbar">
+        <a href="homepage/">Home</a>
+        <a href="About/">About</a>
+        <a href="Contact/">Contact</a>
+        {% comment %} <a href="signup/">signup</a> {% endcomment %}
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" style="float:right;">Logout</a>
+            <span style="float:right; color:white; padding:14px 20px;">Hi, {{ user.username }}!</span>
+        {% else %}
+            <a href="{% url 'vflox-login-page' %}" style="float:right;">Login</a>
+            <a href="{% url 'vflox-signup-page' %}" style="float:right;">Signup</a>
+        {% endif %}
+    </div>
+
+    <!-- Content -->
+    <div class=content>
+        <h1>Welcome to My vflox E-learning platform!</h1>
+        <p>Empowering Learners Worldwide</p>
+        <br>
+        <p>Discover a vast library of courses, tutorials, and 
+            resources to help you achieve your goals.
+            Our platform is designed to provide a flexible, 
+            engaging, and supportive learning environment,
+            whether you're looking to:</p>    
+        
+    </div>
+    <div class=features>
+        <h2> features </h2>
+            <ul>
+                <li>Upskill or reskill in your current career</li>
+                <li>Explore new interests or hobbies </li>
+                <li>Prepare for exams or certifications  </li>
+                <li>Develop new skills for personal or professional growth </li>
+            </ul>
+            <div class=Offers>
+                <h2> What We Offer </h2>
+                <ul><li>Diverse Course library: Access a wide range of courses and topics </li>
+                    <li> Expert instructors: Learn from experienced professionals in their fields</li>
+                    <li> Flexible Learning: Learn at your own pace,anytime,anywhere.
+                </ul>
+                <div> 
+                    <marquee> Get Started Today!</marquee>
+                    <h5>  Browse our catalog,create an account, and start learning with us. </h5>
+                </div>
+            </div>
+        
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        copyright; {{ year }} vflox. All rights reserved.
+    </div>
+</body>
+</html>

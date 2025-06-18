@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <style>
+        body{
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        .signup_container{
+            width: 300px;
+            margin: 200px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px #00000001;
+        }
+        h2{
+            text-align: center;
+            margin-bottom: 20px;
+
+        }
+        
+        input[type="email"],input[type="text"],input[type="password"],input[type="password1"]{
+            width: 100%;
+            padding: 10px;
+            margin: 10ppx 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"]{
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin:10px;
+        }
+        input[type="submit"]:hover{
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <div class="signup_container">
+        <h2>signup</h2>
+        {% if error %}
+            <p style ="color: red;"> {{ error }}</p>
+        {% endif %} 
+
+        {% if success %} 
+            <p style="color: green;">  {{ success }}</p> 
+        {% endif %} 
+        
+        <form method="post">
+            {% csrf_token %} 
+            <input type="email" name="email" placeholder="email"
+        required><br><br>
+            <input type="text" name="username" placeholder="username"
+        required><br><br>
+            <input type="password" name="password" placeholder="password"
+        required><br><br>
+            <input type="password" name="password1" placeholder="confirm password"
+        required><br><br>
+            <input type="submit" values="signup">
+        </form>
+        <div class="extra">
+        <p>Don't have an account? <a href="{% url 'vflox-login-page' %}">login</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends 'user/master.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Available Courses</h2>
+    <div class="row">
+        {% for course in courses %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="{{ course.thumbnail.url }}" class="card-img-top" alt="{{ course.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                    <p><strong>Level:</strong> {{ course.level|capfirst }}</p>
+                    <p><strong>Price:</strong> {% if course.is_free %}Free{% else %}₦{{ course.price }}{% endif %}</p>
+
+                    {% if course.id in enrolled_courses %}
+                        <button class="btn btn-success btn-sm" disabled>Enrolled</button>
+                    {% else %}
+                        <form method="post" action="{% url 'enroll_course-page' course.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm">Enroll</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
