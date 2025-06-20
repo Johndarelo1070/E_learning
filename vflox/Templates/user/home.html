@@ -63,9 +63,9 @@
 <body>
     <!-- Navigation -->
     <div class="navbar">
-        <a href="homepage/">Home</a>
-        <a href="About/">About</a>
-        <a href="Contact/">Contact</a>
+        <a href="{% url 'homepage' %}">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
         {% comment %} <a href="signup/">signup</a> {% endcomment %}
 
         {% if user.is_authenticated %}

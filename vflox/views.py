@@ -112,15 +112,15 @@ def custom_logout(request):
     logout(request)
     return redirect('homepage')
 
-def lesson_detail(request, slug):
-    lesson =get_object_or_404(Lesson, slug=slug)
-    previous_lesson = lesson.get_previous()
-    next_lesson = lesson.get_next()
-    return render(request, 'lesson_detail.html', {
-        'lesson': lesson,
-        'previous_lesson': previous_lesson,
-        'next_lesson': next_lesson,
-    })
+# def lesson_detail(request, slug):
+#     lesson =get_object_or_404(Lesson, slug=slug)
+#     previous_lesson = lesson.get_previous()
+#     next_lesson = lesson.get_next()
+#     return render(request, 'lesson_detail.html', {
+#         'lesson': lesson,
+#         'previous_lesson': previous_lesson,
+#         'next_lesson': next_lesson,
+#     })
     
 # @login_required
 # def student_dashboard(request):
@@ -222,7 +222,7 @@ def lesson_detail(request, slug):
 @login_required
 def course_list(request):
     student = get_object_or_404(Student, user=request.user)
-    courses = Course.objects.all()
+    courses = Course.objects.filter.all()
     enrolled_course_ids = student.enrollments.values_list('course_id', flat=True)
     return render(request, 'user/course_list.html', {
         'courses': courses,
@@ -230,14 +230,25 @@ def course_list(request):
     })
 
 @login_required
-def enroll_course(request, course_id):
+def enroll_course_view(request, course_id):
     student = get_object_or_404(Student, user=request.user)
     course = get_object_or_404(Course, id=course_id)
 
     # Check if already enrolled
-    if not Enrollment.objects.filter(student=student, course=course).exists():
+    if not Enrollment.objects.get(student=student, course=course).exists():
         Enrollment.objects.create(student=student, course=course)
     return redirect('course_list-page')
+
+
+
+    return redirect('student_dashboard-page')
+
+# @login_required
+# def enroll_course(request, course_id):
+#     student, created = Student.objects.get_or_create(user=request.user)
+#     course = get_object_or_404(Course, id=course_id)
+#     student.enrolled_courses.add(course)
+#     return redirect('student_dashboard')
 
 @login_required
 def take_lesson_view(request, lesson_id):
