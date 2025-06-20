@@ -160,7 +160,7 @@ def custom_logout(request):
             
     
 # # @login_required
-@login_required
+@login_required(login_url='vflox-login-page')
 def student_dashboard(request):
     student = Student.objects.get(user=request.user)
     courses = Course.objects.all()
@@ -179,7 +179,7 @@ def student_dashboard(request):
 
     return render(request, 'user/student_dashboard.html', {'progress_data': progress_data})
 
-@login_required
+@login_required(login_url='vflox-login-page')
 def calculate_progress(student, course):
     lessons = course.lessons.all()
     completed = LessonProgress.objects.filter(student=student, lesson__in=lessons, completed=True).count()
@@ -205,21 +205,21 @@ def calculate_progress(student, course):
 #         'courses': courses
 #     })
 
-@login_required
+@login_required(login_url='vflox-login-page')
 def course_detail(request, slug):
     course = get_object_or_404(Course, slug=slug)
-    return render(request, 'course_detail.html', {'course': course})
+    return render(request, 'user/course_detail.html', {'course': course})
 
-@login_required
+@login_required(login_url='vflox-login-page')
 def lesson_detail(request, slug):
     lesson = get_object_or_404(Lesson, slug=slug)
-    return render(request, 'lesson_detail.html', {'lesson': lesson})
+    return render(request, 'user/lesson_detail.html', {'lesson': lesson})
 
 # def course_list_view(request):
 #     courses = Course.objects.all()
 #     return render(request, 'courses/course_list.html', {'courses': courses})
 
-@login_required
+@login_required(login_url='vflox-login-page')
 def course_list(request):
     student = get_object_or_404(Student, user=request.user)
     courses = Course.objects.filter.all()
@@ -229,7 +229,7 @@ def course_list(request):
         'enrolled_courses': enrolled_course_ids
     })
 
-@login_required
+@login_required(login_url='vflox-login-page')
 def enroll_course_view(request, course_id):
     student = get_object_or_404(Student, user=request.user)
     course = get_object_or_404(Course, id=course_id)
@@ -250,7 +250,7 @@ def enroll_course_view(request, course_id):
 #     student.enrolled_courses.add(course)
 #     return redirect('student_dashboard')
 
-@login_required
+@login_required(login_url='vflox-login-page')
 def take_lesson_view(request, lesson_id):
     student = request.user.student
     lesson = get_object_or_404(Lesson, id=lesson_id)
@@ -267,11 +267,7 @@ def take_lesson_view(request, lesson_id):
         'lesson': lesson
     })
     
-
-
-
-
-@login_required
+@login_required(login_url='vflox-login-page')
 def unfinished_lessons_view(request):
     student = request.user.student  # Assumes custom Student model is linked
     enrollments = Enrollment.objects.filter(student=student)
