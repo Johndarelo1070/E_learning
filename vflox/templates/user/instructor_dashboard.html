@@ -1,0 +1,27 @@
+<!-- templates/dashboard/instructor_dashboard.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instructor Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}</h1>
+    <h2>Your Courses</h2>
+
+    {% if courses %}
+        <ul>
+            {% for course in courses %}
+                <li>
+                    <strong>{{ course.title }}</strong><br>
+                    {{ course.description }}<br>
+                    Created on: {{ course.created_at|date:"Y-m-d" }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't created any courses yet.</p>
+    {% endif %}
+
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>

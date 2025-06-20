@@ -1,0 +1,13 @@
+<h1>Unfinished Lessons</h1>
+
+{% if unfinished_lessons %}
+    <ul>
+    {% for lesson in unfinished_lessons %}
+        <li>
+            <a href="{% url 'take_lesson' lesson.id %}">{{ lesson.title }}</a> - {{ lesson.course.title }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You've completed all your lessons!</p>
+{% endif %}

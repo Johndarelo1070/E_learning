@@ -1,0 +1,100 @@
+
+{% extends 'user/master.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Welcome, {{ request.user.first_name|default:request.user.username }}</h2>
+
+    <!-- 1. Available Courses for Enrollment -->
+    <div class="mb-5">
+        <h4>Available Courses</h4>
+        {% if available_courses %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in available_courses %}
+                    <tr>
+                        <td>{{ course.title }}</td>
+                        <td>{{ course.description }}</td>
+                        <td>
+                            <form method="post" action="{% url 'enroll_course-page' course.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Enroll</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>1</p>
+        {% endif %}
+    </div>
+
+    <!-- 2. Enrolled Courses -->
+    <div class="mb-5">
+        <h4>My Courses</h4>
+        {% if enrolled_courses %}
+            <div class="row">
+                {% for course in enrolled_courses %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                                <a href="{% url 'course_detail-page' course.id %}" class="btn btn-primary btn-sm">View Course</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>You are not enrolled in any courses.</p>
+        {% endif %}
+    </div>
+
+    <!-- 3. Unfinished Lessons -->
+    <div class="mb-5">
+        <h4>Unfinished Lessons</h4>
+        {% if unfinished_lessons %}
+            <ul class="list-group">
+                {% for lesson in unfinished_lessons %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ lesson.title }} ({{ lesson.course.title }})
+                        <a href="{% url 'take_lesson-page' lesson.id %}" class="btn btn-warning btn-sm">Continue</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>All lessons completed. Great job!</p>
+        {% endif %}
+    </div>
+
+    <!-- 4. Progress Summary -->
+    <div class="mb-5">
+        <h4>Lesson Progress</h4>
+        {% if lesson_progress %}
+            <ul class="list-group">
+                {% for item in lesson_progress %}
+                    <li class="list-group-item">
+                        <strong>{{ item.course.title }}</strong><br>
+                        Progress: {{ item.completed_lessons }} / {{ item.total_lessons }} lessons ({{ item.percent }}%)
+                        <div class="progress mt-2" style="height: 15px;">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ item.percent }}%;" aria-valuenow="{{ item.percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No progress data available.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
